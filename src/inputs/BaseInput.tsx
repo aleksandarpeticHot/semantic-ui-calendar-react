@@ -1,4 +1,3 @@
-import { default as moment, Moment } from 'moment';
 import * as React from 'react';
 import {
   SemanticTRANSITIONS,
@@ -12,6 +11,7 @@ import {
   TimeFormat,
 } from '../pickers/BasePicker';
 import CustomPropTypes from '../lib/CustomPropTypes';
+import dayjs from 'dayjs';
 
 export interface BaseInputProps {
   [key: string]: any;
@@ -131,7 +131,7 @@ export const BaseInputPropTypes = {
 
 export interface MarkedValuesProps {
   /** Array of marked dates. */
-  marked?: Moment[] | Date[];
+  marked?: Date[];
   /** String specifying the mark color (Optional). */
   markColor?: SemanticCOLORS;
 }
@@ -150,7 +150,7 @@ export interface DateRelatedProps {
   /** Moment date formatting string. */
   dateFormat?: string;
   /** Date to display initially when no date is selected. */
-  initialDate?: string | Date | Moment;
+  initialDate?: string | Date;
 }
 
 export const DateRelatedPropTypes = {
@@ -183,8 +183,6 @@ export interface DisableValuesProps {
   disable?:
   | string
   | string[]
-  | Moment
-  | Moment[]
   | Date
   | Date[];
 }
@@ -206,8 +204,6 @@ export interface EnableValuesProps {
   enable?:
   | string
   | string[]
-  | Moment
-  | Moment[]
   | Date
   | Date[];
 }
@@ -228,12 +224,10 @@ export interface MinMaxValueProps {
   /** Maximum date that can be selected. */
   maxDate?:
   | string
-  | Moment
   | Date;
   /** Minimum date that can be selected. */
   minDate?:
   | string
-  | Moment
   | Date;
 }
 
@@ -280,7 +274,7 @@ abstract class BaseInput<P extends BaseInputProps,
   S extends BaseInputState> extends React.Component<P, S> {
   public static defaultProps = {
     inline: false,
-    localization: moment.locale(),
+    localization: dayjs.locale(),
   };
 
   private calendarNode: HTMLElement;

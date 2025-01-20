@@ -1,7 +1,7 @@
 import isNil from 'lodash/isNil';
 import invoke from 'lodash/invoke';
 
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as React from 'react';
 
 import { tick } from '../lib';
@@ -98,17 +98,24 @@ class TimeInput extends BaseInput<TimeInputProps, TimeInputState> {
   }
 
   private handleSelect = (
-      e: React.SyntheticEvent<HTMLElement>,
-      { value }: BasePickerOnChangeData,
-    ) => {
+    e: React.SyntheticEvent<HTMLElement>,
+    { value }: BasePickerOnChangeData,
+  ) => {
 
     tick(this.handleSelectUndelayed, e, { value });
   }
 
+  private formatHour = (hour: number, timeFormat: string, minute?: number): string => {
+    // Create a Dayjs instance for today and set the hour, minute, and second
+    const time = dayjs().set('hour', hour).set('minute', minute || 0).set('second', 0);
+    // Format the time using the specified format from TIME_FORMAT
+    return time.format(TIME_FORMAT[timeFormat]);
+  }
+
   private handleSelectUndelayed = (
-      e: React.SyntheticEvent<HTMLElement>,
-      { value }: BasePickerOnChangeData,
-    ) => {
+    e: React.SyntheticEvent<HTMLElement>,
+    { value }: BasePickerOnChangeData,
+  ) => {
 
     const {
       hour,
@@ -121,9 +128,9 @@ class TimeInput extends BaseInput<TimeInputProps, TimeInputState> {
 
     let outputTimeString = '';
     if (this.state.mode === 'hour' && !isNil(hour)) {
-      outputTimeString = moment({ hour }).format(TIME_FORMAT[timeFormat]);
+      outputTimeString = this.formatHour(hour, timeFormat);
     } else if (!isNil(hour) && !isNil(minute)) {
-      outputTimeString = moment({ hour, minute }).format(TIME_FORMAT[timeFormat]);
+      outputTimeString = this.formatHour(hour, timeFormat, minute);
     }
     invoke(this.props, 'onChange', e, { ...this.props, value: outputTimeString });
     if (this.props.closable && (this.state.mode === 'minute' || this.props.disableMinute)) {

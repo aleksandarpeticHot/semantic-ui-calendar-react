@@ -1,5 +1,5 @@
 import invoke from 'lodash/invoke';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as React from 'react';
 
 import MonthPicker, {
@@ -111,9 +111,9 @@ class MonthInput extends BaseInput<MonthInputProps, BaseInputState> {
   }
 
   private handleSelect = (e: React.SyntheticEvent<HTMLElement>,
-                          { value }: MonthPickerOnChangeData) => {
+    { value }: MonthPickerOnChangeData) => {
     const { localization } = this.props;
-    const date = localization ? moment({ month: value.month }).locale(localization) : moment({ month: value.month });
+    const date = localization ? dayjs(new Date().setMonth(value.month)).locale(localization) : dayjs(new Date().setMonth(value.month));
     let output = '';
     if (date.isValid()) {
       output = date.format(this.props.dateFormat);

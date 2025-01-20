@@ -2,8 +2,8 @@ import isNil from 'lodash/isNil';
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 import compact from 'lodash/compact';
-
-import moment, { Moment } from 'moment';
+import dayjs, { Dayjs } from 'dayjs';
+import { createDayjsDate } from 'src/util';
 
 export const TIME_FORMAT = {
   24: 'HH:mm',
@@ -13,22 +13,21 @@ export const TIME_FORMAT = {
 
 type ParseValueData =
   | string
-  | moment.Moment
+  | Dayjs
   | Date;
 
 /** Parse string, moment, Date.
  *
  * Return unedfined on invalid input.
  */
-export function parseValue(value: ParseValueData, dateFormat: string, localization: string): moment.Moment {
+export function parseValue(value: ParseValueData, dateFormat: string, localization: string): Dayjs | undefined {
   if (!isNil(value) && !isNil(dateFormat)) {
-    const date = moment(value, dateFormat);
+    const date = dayjs(value, dateFormat); // Parse the date using the format
     if (date.isValid()) {
-      date.locale(localization);
-
-      return date;
+      return date.locale(localization); // Apply localization if the date is valid
     }
   }
+  return undefined; // Return undefined if parsing fails
 }
 
 type ParseArrayOrValueData =
@@ -61,9 +60,9 @@ interface DateParams {
 }
 
 interface GetInitializerParams {
+  dateParams?: DateParams;
   initialDate?: ParseValueData;
   dateFormat?: string;
-  dateParams?: DateParams;
   localization?: string;
 }
 
@@ -72,7 +71,7 @@ interface GetInitializerParams {
  * Creates moment using `dateParams` or `initialDate` arguments (if provided).
  * Precedense order: dateParams -> initialDate -> default value
  */
-export function getInitializer(context: GetInitializerParams): moment.Moment {
+export function getInitializer(context: GetInitializerParams): Dayjs {
   const {
     dateParams,
     initialDate,
@@ -80,7 +79,8 @@ export function getInitializer(context: GetInitializerParams): moment.Moment {
     localization,
   } = context;
   if (dateParams) {
-    const parsedParams = localization ? moment(dateParams).locale(localization) : moment(dateParams);
+    const dayjsDateParams = createDayjsDate(dateParams)
+    const parsedParams = localization ? dayjs(dayjsDateParams).locale(localization) : dayjs(dayjsDateParams);
     if (parsedParams.isValid()) {
       return parsedParams;
     }
@@ -90,20 +90,21 @@ export function getInitializer(context: GetInitializerParams): moment.Moment {
     return parsedInitialDate;
   }
 
-  return localization ? moment().locale(localization) : moment();
+  return localization ? dayjs().locale(localization) : dayjs();
 }
 
-type InitialDate = string | moment.Moment | Date;
+type InitialDate = string | Dayjs | Date;
 type DateValue = InitialDate;
 
 /** Creates moment instance from provided value or initialDate.
  *  Creates today by default.
  */
-export function buildValue(value: ParseValueData,
-                           initialDate: InitialDate,
-                           localization: string,
-                           dateFormat: string,
-                           defaultVal = moment()): Moment {
+export function buildValue(
+  value: ParseValueData,
+  initialDate: InitialDate,
+  localization: string,
+  dateFormat: string,
+  defaultVal = dayjs()): Dayjs {
   const valueParsed = parseValue(value, dateFormat, localization);
   if (valueParsed) {
     return valueParsed;
@@ -124,14 +125,14 @@ export function dateValueToString(value: DateValue, dateFormat: string, locale: 
   if (isString(value)) {
     return value;
   }
-  if (moment.isMoment(value)) {
+  if (dayjs.isDayjs(value)) {
     const _value = value.clone();
     _value.locale(locale);
 
     return _value.format(dateFormat);
   }
 
-  const date = moment(value, dateFormat);
+  const date = dayjs(value, dateFormat);
   if (date.isValid()) {
     date.locale(locale);
 
@@ -142,14 +143,14 @@ export function dateValueToString(value: DateValue, dateFormat: string, locale: 
 }
 
 function cleanDate(inputString: string, dateFormat: string): string {
-  const formattedDateLength = moment().format(dateFormat).length;
+  const formattedDateLength = dayjs().format(dateFormat).length;
 
   return inputString.trim().slice(0, formattedDateLength);
 }
 
 interface Range {
-  start?: moment.Moment;
-  end?: moment.Moment;
+  start?: Dayjs;
+  end?: Dayjs;
 }
 
 /**
@@ -170,9 +171,9 @@ export function parseDatesRange(
   let start;
   let end;
 
-  start = moment(dates[0], dateFormat);
+  start = dayjs(dates[0], dateFormat);
   if (dates.length === 2) {
-    end = moment(dates[1], dateFormat);
+    end = dayjs(dates[1], dateFormat);
   }
   if (start && start.isValid()) {
     result.start = start;

@@ -1,6 +1,6 @@
 import isNil from 'lodash/isNil';
 import invoke from 'lodash/invoke';
-import moment, { Moment } from 'moment';
+import dayjs, { Dayjs } from 'dayjs';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
@@ -28,6 +28,7 @@ import BaseInput, {
   MarkedValuesProps,
   MarkedValuesPropTypes,
 } from './BaseInput';
+import { createDayjsDate } from '../util'
 
 import {
   tick,
@@ -111,7 +112,7 @@ class DateInput extends BaseInput<DateInputProps, DateInputState> {
     ...MinMaxValuePropTypes,
     ...{
       /** Display mode to start. */
-      startMode: PropTypes.oneOf([ 'year', 'month', 'day' ]),
+      startMode: PropTypes.oneOf(['year', 'month', 'day']),
     },
   };
 
@@ -175,10 +176,10 @@ class DateInput extends BaseInput<DateInputProps, DateInputState> {
     );
   }
 
-  private parseInternalValue(): Moment {
+  private parseInternalValue(): Dayjs {
     /*
-      Creates moment instance from values stored in component's state
-      (year, month, date) in order to pass this moment instance to
+      Creates dayjs instance from values stored in component's state
+      (year, month, date) in order to pass this dayjs instance to
       underlying picker.
       Return undefined if none of these state fields has value.
     */
@@ -188,7 +189,11 @@ class DateInput extends BaseInput<DateInputProps, DateInputState> {
       date,
     } = this.state;
     if (!isNil(year) || !isNil(month) || !isNil(date)) {
-      return moment({ year, month, date });
+      const currentYear = year ?? dayjs().year();
+      const currentMonth = month ?? 0; // Default to January if month is not provided
+      const currentDate = date ?? 1; // Default to 1 if date is not provided
+
+      return dayjs(new Date(currentYear, currentMonth, currentDate));
     }
   }
 
@@ -286,7 +291,8 @@ class DateInput extends BaseInput<DateInputProps, DateInputState> {
         mode,
       } = prevState;
       if (mode === 'day') {
-        const outValue = moment(value).format(this.props.dateFormat);
+        const date = createDayjsDate(value)
+        const outValue = dayjs(date).format(this.props.dateFormat);
         invoke(this.props, 'onChange', e, { ...this.props, value: outValue });
       }
 
@@ -300,7 +306,7 @@ class DateInput extends BaseInput<DateInputProps, DateInputState> {
 
   /** Keeps internal state in sync with input field value. */
   private onInputValueChange = (e, { value }) => {
-    const parsedValue = moment(value, this.props.dateFormat);
+    const parsedValue = dayjs(value, this.props.dateFormat);
     if (parsedValue.isValid()) {
       this.setState({
         year: parsedValue.year(),

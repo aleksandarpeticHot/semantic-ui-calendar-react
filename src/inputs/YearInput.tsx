@@ -1,5 +1,5 @@
-import moment from 'moment';
 import * as React from 'react';
+import dayjs from 'dayjs';
 
 import YearPicker, {
   YearPickerOnChangeData,
@@ -107,9 +107,9 @@ class YearInput extends BaseInput<YearInputProps, BaseInputState> {
   }
 
   private handleSelect = (e: React.SyntheticEvent<HTMLElement>,
-                          { value }: YearPickerOnChangeData) => {
+    { value }: YearPickerOnChangeData) => {
     const { localization } = this.props;
-    const date = localization ? moment({ year: value.year }).locale(localization) : moment({ year: value.year });
+    const date = localization ? dayjs(new Date().setFullYear(value.year)).locale(localization) : dayjs(new Date().setFullYear(value.year));
     let output = '';
     if (date.isValid()) {
       output = date.format(this.props.dateFormat);

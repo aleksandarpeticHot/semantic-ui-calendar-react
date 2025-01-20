@@ -1,5 +1,11 @@
 {
   "tslint.enable": true,
-  "tslint.jsEnable": true,
-  "tslint.run": "onSave"
+  "tslint.jsEnable": false, // Disable TSLint for JavaScript since it is primarily for TypeScript
+  "tslint.run": "onSave",
+  "eslint.enable": false, // Disable ESLint if you are fully switching to TSLint
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": true // Use TSLint for autofixing on save
+  },
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2
 }

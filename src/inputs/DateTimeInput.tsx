@@ -1,9 +1,8 @@
 import isNil from 'lodash/isNil';
 import invoke from 'lodash/invoke';
-
-import moment, { Moment } from 'moment';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 
 import {
   BasePickerOnChangeData,
@@ -44,6 +43,7 @@ import {
   getDisabledMonths,
   getDisabledYears,
 } from './shared';
+import { createDayjsDate } from 'src/util';
 
 type CalendarMode =
   | 'year'
@@ -132,7 +132,7 @@ class DateTimeInput extends BaseInput<DateTimeInputProps, DateTimeInputState> {
     ...MarkedValuesPropTypes,
     ...MinMaxValuePropTypes,
     ...{
-      startMode: PropTypes.oneOf([ 'year', 'month', 'day' ]),
+      startMode: PropTypes.oneOf(['year', 'month', 'day']),
       /** Date and time divider. */
       divider: PropTypes.string,
       /** Datetime formatting string. */
@@ -207,7 +207,7 @@ class DateTimeInput extends BaseInput<DateTimeInputProps, DateTimeInputState> {
     );
   }
 
-  private parseInternalValue(): Moment {
+  private parseInternalValue(): Dayjs {
     /*
       Creates moment instance from values stored in component's state
       (year, month, date, hour, minute) in order to pass this moment instance to
@@ -226,7 +226,7 @@ class DateTimeInput extends BaseInput<DateTimeInputProps, DateTimeInputState> {
       || !isNil(date)
       || !isNil(hour)
       || !isNil(minute)) {
-      return moment({ year, month, date, hour, minute });
+      return createDayjsDate({ year, month, date, hour, minute })
     }
   }
 
@@ -347,7 +347,7 @@ class DateTimeInput extends BaseInput<DateTimeInputProps, DateTimeInputState> {
   }
 
   private handleSelect = (e: React.SyntheticEvent<HTMLElement>,
-                          { value }: BasePickerOnChangeData): void => {
+    { value }: BasePickerOnChangeData): void => {
     tick(this.handleSelectUndelayed, e, { value });
   }
 
@@ -358,7 +358,7 @@ class DateTimeInput extends BaseInput<DateTimeInputProps, DateTimeInputState> {
   }
 
   private handleSelectUndelayed = (e: React.SyntheticEvent<HTMLElement>,
-                                   { value }: BasePickerOnChangeData): void => {
+    { value }: BasePickerOnChangeData): void => {
     const { closable, disableMinute } = this.props;
 
     const closeCondA = closable && this.state.mode === 'minute';
@@ -375,7 +375,8 @@ class DateTimeInput extends BaseInput<DateTimeInputProps, DateTimeInputState> {
       } = prevState;
 
       if (mode === endAtMode) {
-        const outValue = moment(value).format(this.getDateTimeFormat());
+        const date = createDayjsDate(value)
+        const outValue = dayjs(date).format(this.getDateTimeFormat());
         invoke(this.props, 'onChange', e, { ...this.props, value: outValue });
       }
 
@@ -391,7 +392,8 @@ class DateTimeInput extends BaseInput<DateTimeInputProps, DateTimeInputState> {
 
   /** Keeps internal state in sync with input field value. */
   private onInputValueChange = (e, { value }) => {
-    const parsedValue = moment(value, this.getDateTimeFormat());
+    const date = createDayjsDate(value)
+    const parsedValue = dayjs(date)
     if (parsedValue.isValid()) {
       this.setState({
         year: parsedValue.year(),

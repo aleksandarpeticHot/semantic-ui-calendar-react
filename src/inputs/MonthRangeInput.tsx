@@ -108,8 +108,8 @@ class MonthRangeInput extends BaseInput<MonthRangeInputProps, BaseInputState> {
   }
 
   private handleSelect = (e: React.SyntheticEvent<HTMLElement>,
-                          {value}: BasePickerOnChangeData) => {
-    const {dateFormat} = this.props;
+    { value }: BasePickerOnChangeData) => {
+    const { dateFormat } = this.props;
     const {
       start,
       end,
@@ -121,7 +121,7 @@ class MonthRangeInput extends BaseInput<MonthRangeInputProps, BaseInputState> {
       outputString = `${start.format(dateFormat)}${DATES_SEPARATOR}`;
     }
 
-    invoke(this.props, 'onChange', e, {...this.props, value: outputString, date: value});
+    invoke(this.props, 'onChange', e, { ...this.props, value: outputString, date: value });
     if (this.props.closable && start && end) {
       this.closePopup();
     }

@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 
 /**
  * Filter out all moments that don't have
@@ -7,7 +7,7 @@ import { Moment } from 'moment';
  * @return An array of moments; each of these moments
  * doesn't have any selectable date in month.
  */
-export function getDisabledMonths(moments: Moment[]): Moment[] {
+export function getDisabledMonths(moments: Dayjs[]): Dayjs[] {
   if (!moments) {
     return;
   }
@@ -39,7 +39,7 @@ export function getDisabledMonths(moments: Moment[]): Moment[] {
  * @return An array of moments; each of these moments
  * doesn't have any selectable month in year.
  */
-export function getDisabledYears(moments: Moment[]): Moment[] {
+export function getDisabledYears(moments: Dayjs[]): Dayjs[] {
   if (!moments) {
     return;
   }

@@ -2,7 +2,7 @@ import keyboardKey from 'keyboard-key';
 import isNumber from 'lodash/isNumber';
 import isNil from 'lodash/isNil';
 import includes from 'lodash/includes';
-import { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 import * as React from 'react';
 
 import {
@@ -29,9 +29,9 @@ export interface BasePickerOnChangeData {
     /** Minute (0 - 59). */
     minute?: number;
     /** Selected start date. */
-    start?: Moment;
+    start?: Dayjs;
     /** Selected end date. */
-    end?: Moment;
+    end?: Dayjs;
   };
 }
 
@@ -39,9 +39,9 @@ export interface BasePickerProps {
   /** Called after day is selected. */
   onChange: (e: React.SyntheticEvent<HTMLElement>, data: BasePickerOnChangeData) => void;
   /** Currently selected date. */
-  value?: Moment;
+  value?: Dayjs;
   /** A value for initializing day picker's state. */
-  initializeWith: Moment;
+  initializeWith: Dayjs;
   /** Forse popup to close. */
   closePopup: () => void;
   /** Whether to display picker without a popup or inside a popup. */
@@ -54,7 +54,7 @@ export interface BasePickerProps {
   onCalendarViewMount: (e: HTMLElement) => void;
   /** Called on calendar's header click. */
   onHeaderClick: () => void;
-  /** Moment date localization */
+  /** Dayjs date localization */
   localization?: string;
   tabIndex?: string;
   pickerWidth?: string;
@@ -68,24 +68,24 @@ export interface OptionalHeaderProps {
 
 export interface DisableValuesProps {
   /** Array of disabled dates. */
-  disable?: Moment[];
+  disable?: Dayjs[];
 }
 
 export interface EnableValuesProps {
   /** Array of enabled dates. */
-  enable?: Moment[];
+  enable?: Dayjs[];
 }
 
 export interface MinMaxValueProps {
   /** Minimal date that could be selected. */
-  minDate?: Moment;
+  minDate?: Dayjs;
   /** Maximal date that could be selected. */
-  maxDate?: Moment;
+  maxDate?: Dayjs;
 }
 
 export interface MarkedValuesProps {
   /** Array of marked dates. */
-  marked?: Moment[];
+  marked?: Dayjs[];
   /** String specifying the mark color (Optional). */
   markColor?: SemanticCOLORS;
 }
@@ -100,7 +100,7 @@ export interface BasePickerState extends Readonly<any> {
   /** Position of a cell that is currently hovered on. */
   hoveredCellPosition: number | undefined;
   /** Inner picker's currently selected date. */
-  date: Moment;
+  date: Dayjs;
 }
 
 /** Do not expose this class. Instead use RangeSelectionPicker and SingleSelectionPicker. */
@@ -124,7 +124,7 @@ abstract class BasePicker<P extends BasePickerProps> extends React.Component<P, 
   }
 
   protected onHoveredCellPositionChange = (e: React.SyntheticEvent<HTMLElement>,
-                                           { itemPosition }: { itemPosition: number }): void => {
+    { itemPosition }: { itemPosition: number }): void => {
     this.setState({
       hoveredCellPosition: itemPosition,
     });
