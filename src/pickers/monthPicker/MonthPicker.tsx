@@ -74,7 +74,7 @@ class MonthPicker
 
     return (
       <MonthView
-        { ...rest }
+        {...rest}
         values={this.buildCalendarValues()}
         onValueClick={this.handleChange}
         onCellHover={this.onHoveredCellPositionChange}
@@ -170,8 +170,8 @@ class MonthPicker
   }
 
   protected switchToNextPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const nextDate = date.clone();
       nextDate.add(1, 'year');
@@ -181,8 +181,8 @@ class MonthPicker
   }
 
   protected switchToPrevPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const prevDate = date.clone();
       prevDate.subtract(1, 'year');

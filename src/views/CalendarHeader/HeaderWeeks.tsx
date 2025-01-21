@@ -1,21 +1,25 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as React from 'react';
 import { Table } from 'semantic-ui-react';
+import localeData from 'dayjs/plugin/localeData';
+import isoWeek from 'dayjs/plugin/isoWeek';
 
-/** Return array of week day names.
- *
- * getWeekDays() --> ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Su']
- */
-const getWeekDays = (m, localization) => {
-  const weekDays = [];
-  const day = localization ? m().locale(localization).startOf('week') : m().startOf('week');
+dayjs.extend(localeData); // Extend with localeData for weekday names
+dayjs.extend(isoWeek); // Extend with isoWeek for consistent week start
+
+const getWeekDays = (d, localization?: string): string[] => {
+  const weekDays: string[] = [];
+  const day = localization
+    ? d().locale(localization).startOf('week')
+    : d().startOf('week');
+
   for (let i = 0; i < 7; i++) {
-    weekDays[i] = day.format('dd');
-    day.add(1, 'd');
+    weekDays[i] = day.add(i, 'day').format('dd'); // Short weekday names
   }
 
   return weekDays;
 };
+
 
 const cellStyle = {
   border: 'none',
@@ -43,7 +47,7 @@ function HeaderWeeks(props: HeaderWeeksProps) {
 
   return (
     <Table.Row>
-      { getWeekDayCells(moment, localization) }
+      {getWeekDayCells(dayjs, localization)}
     </Table.Row>
   );
 }

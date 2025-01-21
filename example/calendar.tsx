@@ -212,7 +212,7 @@ class DateTimeForm extends React.Component<any, any> {
           iconPosition='left'
           autoComplete='off'
           value={this.state.monthRange}
-          onChange={this.handleChange}/>
+          onChange={this.handleChange} />
       </Form>
     );
   }
@@ -291,7 +291,7 @@ class DateTimeFormInline extends React.Component<any, any> {
           name='month'
           onChange={this.handleChange}
         />
-        <br/>
+        <br />
         <MonthRangeInput
           inline
           className='example-calendar-input'
@@ -309,6 +309,7 @@ class DateTimeFormInline extends React.Component<any, any> {
     }
   }
 }
+
 
 ReactDOM.render(
   <App />,

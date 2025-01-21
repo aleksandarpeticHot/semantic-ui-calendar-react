@@ -67,7 +67,7 @@ class YearPicker extends SingleSelectionPicker<YearPickerProps> {
 
     return (
       <YearView
-        { ...rest }
+        {...rest}
         values={this.buildCalendarValues()}
         onNextPageBtnClick={this.switchToNextPage}
         onPrevPageBtnClick={this.switchToPrevPage}
@@ -143,15 +143,15 @@ class YearPicker extends SingleSelectionPicker<YearPickerProps> {
     if (isArray(this.props.enable)) {
       const enabledYears = this.props.enable.map((yearMoment) => yearMoment.year().toString());
       disabled = concat(disabled,
-                          years
-                            .filter((year) => !includes(enabledYears, year))
-                            .map((year) => years.indexOf(year)));
+        years
+          .filter((year) => !includes(enabledYears, year))
+          .map((year) => years.indexOf(year)));
     }
     if (isArray(this.props.disable)) {
       disabled = concat(disabled,
-                          this.props.disable
-                            .filter((yearMoment) => includes(years, yearMoment.year().toString()))
-                            .map((yearMoment) => years.indexOf(yearMoment.year().toString())));
+        this.props.disable
+          .filter((yearMoment) => includes(years, yearMoment.year().toString()))
+          .map((yearMoment) => years.indexOf(yearMoment.year().toString())));
     }
     if (!isNil(this.props.maxDate)) {
       if (parseInt(first(years), 10) > this.props.maxDate.year()) {
@@ -219,8 +219,8 @@ class YearPicker extends SingleSelectionPicker<YearPickerProps> {
   }
 
   protected switchToNextPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const nextDate = date.clone();
       nextDate.add(YEARS_ON_PAGE, 'year');
@@ -230,8 +230,8 @@ class YearPicker extends SingleSelectionPicker<YearPickerProps> {
   }
 
   protected switchToPrevPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const prevDate = date.clone();
       prevDate.subtract(YEARS_ON_PAGE, 'year');

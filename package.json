@@ -41,8 +41,7 @@
   "license": "MIT",
   "peerDependencies": {
     "react": "^18.3.12",
-    "react-dom": "^18.3.12",
-    "semantic-ui-react": ">=3.0.0"
+    "react-dom": "^18.3.12"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -55,9 +54,9 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@types/lodash": "^4.14.119",
-    "@types/prop-types": "^15.7.1",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.12",
+    "@types/prop-types": "^15.7.4",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.2.7",
     "babel-loader": "^8.0.4",
     "babel-plugin-transform-react-handled-props": "^1.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.14",
@@ -71,15 +70,15 @@
     "mkdirp": "^0.5.1",
     "mocha": "^5.2.0",
     "mockdate": "^2.0.2",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "rimraf": "^2.6.2",
     "semantic-ui-react": "^3.0.0",
     "sinon": "^7.2.2",
     "ts-loader": "^5.3.1",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "typescript": "^3.2.2",
+    "typescript": "^5.7.3",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
@@ -88,6 +87,6 @@
     "keyboard-key": "^1.0.2",
     "lodash": "^4.17.15",
     "dayjs": "^1.11.3",
-    "prop-types": "^15.6.2"
+    "prop-types": "^15.8.1"
   }
 }

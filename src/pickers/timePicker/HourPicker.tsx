@@ -77,7 +77,7 @@ class HourPicker
 
     return (
       <HourView
-        { ...rest }
+        {...rest}
         values={this.buildCalendarValues()}
         onNextPageBtnClick={this.switchToNextPage}
         onPrevPageBtnClick={this.switchToPrevPage}
@@ -92,7 +92,7 @@ class HourPicker
         disabledItemIndexes={this.getDisabledPositions()}
         activeItemIndex={this.getActiveCellPosition()}
         currentHeadingValue={this.getCurrentDate()}
-        localization={localization}/>
+        localization={localization} />
     );
   }
 
@@ -170,7 +170,7 @@ class HourPicker
       if (minDate.isSame(this.state.date, 'day')) {
         disabledByMinDate = concat(
           disabledByMinDate,
-          range(0 , minDate.hour()));
+          range(0, minDate.hour()));
       }
     }
     if (maxDate) {
@@ -202,8 +202,8 @@ class HourPicker
   }
 
   protected switchToNextPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const nextDate = date.clone();
       nextDate.add(1, 'day');
@@ -213,8 +213,8 @@ class HourPicker
   }
 
   protected switchToPrevPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const prevDate = date.clone();
       prevDate.subtract(1, 'day');

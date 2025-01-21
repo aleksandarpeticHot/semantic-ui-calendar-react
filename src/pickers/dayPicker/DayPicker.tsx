@@ -74,7 +74,7 @@ class DayPicker
 
     return (
       <DayView
-        { ...rest }
+        {...rest}
         values={this.buildCalendarValues()}
         hasNextPage={this.isNextPageAvailable()}
         hasPrevPage={this.isPrevPageAvailable()}
@@ -117,8 +117,8 @@ class DayPicker
 
   protected getInitialDatePosition(): number {
     return getInitialDatePosition(this.state.date.date().toString(),
-                                  this.buildCalendarValues(),
-                                  this.getSelectableCellPositions());
+      this.buildCalendarValues(),
+      this.getSelectableCellPositions());
   }
 
   protected getActiveCellPosition(): number {
@@ -207,8 +207,8 @@ class DayPicker
   }
 
   protected switchToNextPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const nextDate = date.clone();
       nextDate.add(1, 'month');
@@ -218,8 +218,8 @@ class DayPicker
   }
 
   protected switchToPrevPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const prevDate = date.clone();
       prevDate.subtract(1, 'month');

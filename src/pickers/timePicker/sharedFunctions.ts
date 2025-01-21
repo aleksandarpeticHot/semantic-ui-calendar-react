@@ -1,5 +1,5 @@
-import { Moment } from 'moment';
 
+import { Dayjs } from 'dayjs';
 import { TimeFormat } from '../BasePicker';
 
 export function buildTimeStringWithSuffix(
@@ -39,7 +39,7 @@ function convertHourTo_12_Format(hour: string): string {
   return h;
 }
 
-export function isNextPageAvailable(date: Moment, maxDate: Moment): boolean {
+export function isNextPageAvailable(date: Dayjs, maxDate: Dayjs): boolean {
   if (maxDate) {
     return maxDate.isAfter(date, 'day');
   }
@@ -47,7 +47,7 @@ export function isNextPageAvailable(date: Moment, maxDate: Moment): boolean {
   return true;
 }
 
-export function isPrevPageAvailable(date: Moment, minDate: Moment): boolean {
+export function isPrevPageAvailable(date: Dayjs, minDate: Dayjs): boolean {
   if (minDate) {
     return minDate.isBefore(date, 'day');
   }
@@ -55,6 +55,6 @@ export function isPrevPageAvailable(date: Moment, minDate: Moment): boolean {
   return true;
 }
 
-export function getCurrentDate(date: Moment): string {
+export function getCurrentDate(date: Dayjs): string {
   return date.format('MMMM DD, YYYY');
 }

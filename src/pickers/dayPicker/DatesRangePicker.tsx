@@ -3,9 +3,9 @@ import range from 'lodash/range';
 import includes from 'lodash/includes';
 import last from 'lodash/last';
 import isNil from 'lodash/isNil';
-import moment from 'moment';
-import { Moment } from 'moment';
+import dayjs, { Dayjs } from 'dayjs';
 import * as React from 'react';
+import isBetween from 'dayjs/plugin/isBetween';
 
 import { RangeIndexes } from '../../views/BaseCalendarView';
 import DatesRangeView from '../../views/DatesRangeView';
@@ -27,6 +27,7 @@ import {
   isPrevPageAvailable,
   getMarkedDays,
 } from './sharedFunctions';
+import { createDayjsDate } from '../../util';
 
 const PAGE_WIDTH = 7;
 
@@ -34,9 +35,9 @@ interface DatesRangePickerProps extends BasePickerProps, MinMaxValueProps, Marke
   /** Moment date formatting string. */
   dateFormat: string;
   /** Start of currently selected dates range. */
-  start: Moment;
+  start: Dayjs;
   /** End of currently selected dates range. */
-  end: Moment;
+  end: Dayjs;
   /** Allow end date to be the same as start date. */
   allowSameEndDate: boolean;
 }
@@ -49,6 +50,7 @@ class DatesRangePicker
   constructor(props) {
     super(props);
     this.PAGE_WIDTH = PAGE_WIDTH;
+    dayjs.extend(isBetween);
   }
 
   public render() {
@@ -75,7 +77,7 @@ class DatesRangePicker
 
     return (
       <DatesRangeView
-        { ...rest }
+        {...rest}
         values={this.buildCalendarValues()}
         onNextPageBtnClick={this.switchToNextPage}
         onPrevPageBtnClick={this.switchToPrevPage}
@@ -136,8 +138,8 @@ class DatesRangePicker
 
   protected getInitialDatePosition(): number {
     return getInitialDatePosition(this.state.date.date().toString(),
-                                  this.buildCalendarValues(),
-                                  this.getSelectableCellPositions());
+      this.buildCalendarValues(),
+      this.getSelectableCellPositions());
   }
 
   // TODO: too complicated method
@@ -186,13 +188,13 @@ class DatesRangePicker
         return { start: startPosition, end: endPosition };
       }
       if (startPosition) {
-        return { start: startPosition, end: DAYS_ON_PAGE - 1};
+        return { start: startPosition, end: DAYS_ON_PAGE - 1 };
       }
       if (endPosition) {
-        return { start: 0, end: endPosition};
+        return { start: 0, end: endPosition };
       }
       if (this.state.date.isBetween(start, end)) {
-        return { start: 0, end: DAYS_ON_PAGE - 1};
+        return { start: 0, end: DAYS_ON_PAGE - 1 };
       }
     }
     if (start) {
@@ -272,8 +274,8 @@ class DatesRangePicker
   }
 
   protected switchToNextPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const nextDate = date.clone();
       nextDate.add(1, 'month');
@@ -283,8 +285,8 @@ class DatesRangePicker
   }
 
   protected switchToPrevPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const prevDate = date.clone();
       prevDate.subtract(1, 'month');
@@ -302,10 +304,10 @@ class DatesRangePicker
  * Return undefined if date that is under test is out of page.
  */
 function getDatePosition(
-  prevMonth: Moment,
-  currentMonth: Moment,
-  nextMonth: Moment,
-  date: Moment,
+  prevMonth: Dayjs,
+  currentMonth: Dayjs,
+  nextMonth: Dayjs,
+  date: Dayjs,
   fromPrevMonthDates: number[],
   fromCurrentMonthDates: number[],
   fromNextMonthDates: number[]): number | undefined {
@@ -343,26 +345,26 @@ function getDatesFromNextMonth(date, allDays, nextMonthStartPosition) {
 }
 
 /** Build moment based on current page and date position on that page. */
-function buildMoment(pageReferenceDate: Moment,
-                     firstOnPage: number,
-                     dateToBuildPosition: number,
-                     localization: string): Moment {
+function buildMoment(pageReferenceDate: Dayjs,
+  firstOnPage: number,
+  dateToBuildPosition: number,
+  localization: string): Dayjs {
   let result;
   if (firstOnPage === 1/* page starts from first day in month */) {
-    const dateOptions = {
+    const dateOptions = createDayjsDate({
       year: pageReferenceDate.year(),
       month: pageReferenceDate.month(),
       date: firstOnPage,
-    };
-    result = localization ? moment(dateOptions).locale(localization) : moment(dateOptions);
+    });
+    result = localization ? dayjs(dateOptions).locale(localization) : dayjs(dateOptions);
   } else {
     /* page starts from day in previous month */
-    const dateOptions = {
+    const dateOptions = createDayjsDate({
       year: pageReferenceDate.month() ? pageReferenceDate.year() : pageReferenceDate.year() - 1,
       month: (pageReferenceDate.month() + 11) % 12,
       date: firstOnPage,
-    };
-    result = localization ? moment(dateOptions).locale(localization) : moment(dateOptions);
+    });
+    result = localization ? dayjs(dateOptions).locale(localization) : dayjs(dateOptions);
   }
   result.add(dateToBuildPosition, 'day');
 

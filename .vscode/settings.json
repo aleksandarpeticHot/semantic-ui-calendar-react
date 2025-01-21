@@ -4,7 +4,7 @@
   "tslint.run": "onSave",
   "eslint.enable": false, // Disable ESLint if you are fully switching to TSLint
   "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true // Use TSLint for autofixing on save
+    "source.fixAll.tslint": "explicit"
   },
   "editor.formatOnSave": true,
   "editor.tabSize": 2

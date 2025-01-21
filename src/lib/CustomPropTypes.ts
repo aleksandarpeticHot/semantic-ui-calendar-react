@@ -1,10 +1,10 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export function momentObj(props, propName, componentName) {
   if (props[propName]) {
     const value = props[propName];
 
-    if (moment.isMoment(value)) {
+    if (dayjs.isDayjs(value)) {
       if (!value.isValid()) {
         return new Error(`${propName} in ${componentName} is invalid 'moment' object`);
       }

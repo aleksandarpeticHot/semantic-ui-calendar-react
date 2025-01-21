@@ -4,23 +4,32 @@ import isNil from 'lodash/isNil';
 import isArray from 'lodash/isArray';
 import uniq from 'lodash/uniq';
 import some from 'lodash/some';
+import localeData from 'dayjs/plugin/localeData';
+import 'dayjs/locale/en';
+import 'dayjs/locale/de';
+import 'dayjs/locale/nl';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/nl-be';
 
-import moment from 'moment';
+import dayjs, { Dayjs } from 'dayjs';
 import { MONTHS_IN_YEAR } from './const';
 
 const buildCalendarValues = (localization?: string): string[] => {
   /*
     Return array of months (strings) like ['Aug', 'Sep', ...]
-    that used to populate calendar's page.
+    that is used to populate the calendar's page.
   */
-  const localLocale = localization ? moment.localeData(localization) : undefined;
+  if (localization) {
+    dayjs.locale(localization); // Dynamically set locale
+  }
 
-  return localLocale ? localLocale.monthsShort() : moment.monthsShort();
+  const localLocale = dayjs.localeData(); // Get the current locale data
+  return localLocale.monthsShort(); // Return an array of short month names
 };
 
 const getInitialDatePosition = (
   selectable: number[],
-  currentDate: moment.Moment,
+  currentDate: Dayjs,
 ): number => {
   if (selectable.indexOf(currentDate.month()) < 0) {
     return selectable[0];
@@ -30,11 +39,11 @@ const getInitialDatePosition = (
 };
 
 const getDisabledPositions = (
-  enable: moment.Moment[],
-  disable: moment.Moment[],
-  maxDate: moment.Moment,
-  minDate: moment.Moment,
-  currentDate: moment.Moment,
+  enable: Dayjs[],
+  disable: Dayjs[],
+  maxDate: Dayjs,
+  minDate: Dayjs,
+  currentDate: Dayjs,
 ): number[] => {
   /*
     Return position numbers of months that should be displayed as disabled
@@ -76,9 +85,9 @@ const getDisabledPositions = (
 };
 
 const isNextPageAvailable = (
-  maxDate: moment.Moment,
-  enable: moment.Moment[],
-  currentDate: moment.Moment,
+  maxDate: Dayjs,
+  enable: Dayjs[],
+  currentDate: Dayjs,
 ): boolean => {
   if (isArray(enable)) {
     return some(enable, (enabledMonth) => enabledMonth.isAfter(currentDate, 'year'));
@@ -91,9 +100,9 @@ const isNextPageAvailable = (
 };
 
 const isPrevPageAvailable = (
-  minDate: moment.Moment,
-  enable: moment.Moment[],
-  currentDate: moment.Moment,
+  minDate: Dayjs,
+  enable: Dayjs[],
+  currentDate: Dayjs,
 ): boolean => {
   if (isArray(enable)) {
     return some(enable, (enabledMonth) => enabledMonth.isBefore(currentDate, 'year'));

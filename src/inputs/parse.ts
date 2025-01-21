@@ -3,7 +3,7 @@ import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 import compact from 'lodash/compact';
 import dayjs, { Dayjs } from 'dayjs';
-import { createDayjsDate } from 'src/util';
+import { createDayjsDate } from '../util';
 
 export const TIME_FORMAT = {
   24: 'HH:mm',

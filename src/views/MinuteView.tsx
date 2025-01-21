@@ -54,7 +54,7 @@ class MinuteView extends BaseCalendarView<MinuteViewProps, any> {
 
     return (
       <Calendar ref={(e) => this.calendarNode = findHTMLElement(e)} outlineOnFocus={inline} {...rest}>
-        { hasHeader && <Header { ...headerProps } /> }
+        {hasHeader && <Header {...headerProps} />}
         <Body
           width={MINUTE_CALENDAR_ROW_WIDTH}
           data={values}

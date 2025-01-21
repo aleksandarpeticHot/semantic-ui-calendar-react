@@ -43,7 +43,7 @@ import {
   getDisabledMonths,
   getDisabledYears,
 } from './shared';
-import { createDayjsDate } from 'src/util';
+import { createDayjsDate } from '../util';
 
 type CalendarMode =
   | 'year'

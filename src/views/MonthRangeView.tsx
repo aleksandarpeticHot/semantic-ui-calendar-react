@@ -2,7 +2,7 @@ import range from 'lodash/range';
 import isNil from 'lodash/isNil';
 
 import * as React from 'react';
-import {findHTMLElement} from '../lib';
+import { findHTMLElement } from '../lib';
 
 import BaseCalendarView, {
   BaseCalendarViewProps,
@@ -83,7 +83,7 @@ class MonthRangeView extends BaseCalendarView<MonthRangeViewProps, any> {
           hasPrevPage={hasPrevPage}
           title={currentHeadingValue}
           onHeaderClick={onHeaderClick}
-          localization={localization}/>
+          localization={localization} />
         <Body
           width={MONTH_CALENDAR_ROW_WIDTH}
           data={values}
@@ -91,7 +91,7 @@ class MonthRangeView extends BaseCalendarView<MonthRangeViewProps, any> {
           onCellHover={onCellHover}
           hovered={hoveredItemIndex}
           active={getActive(start, end)}
-          disabled={disabledItemIndexes}/>
+          disabled={disabledItemIndexes} />
       </Calendar>
     );
   }

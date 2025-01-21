@@ -54,7 +54,7 @@ class MonthView extends BaseCalendarView<MonthViewProps, any> {
 
     return (
       <Calendar ref={(e) => this.calendarNode = findHTMLElement(e)} outlineOnFocus={inline} {...rest}>
-        { hasHeader && <Header { ...headerProps } /> }
+        {hasHeader && <Header {...headerProps} />}
         <Body
           width={MONTH_CALENDAR_ROW_WIDTH}
           data={values}

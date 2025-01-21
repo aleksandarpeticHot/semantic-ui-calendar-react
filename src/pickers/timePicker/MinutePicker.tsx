@@ -77,7 +77,7 @@ class MinutePicker
 
     return (
       <MinuteView
-        { ...rest }
+        {...rest}
         values={this.buildCalendarValues()}
         onNextPageBtnClick={this.switchToNextPage}
         onPrevPageBtnClick={this.switchToPrevPage}
@@ -92,7 +92,7 @@ class MinutePicker
         disabledItemIndexes={this.getDisabledPositions()}
         currentHeadingValue={this.getCurrentDate()}
         activeItemIndex={this.getActiveCellPosition()}
-        localization={localization}/>
+        localization={localization} />
     );
   }
 
@@ -156,7 +156,7 @@ class MinutePicker
       if (minDate.isSame(this.state.date, 'hour')) {
         disabledByMinDate = concat(
           disabledByMinDate,
-          range(0 , minDate.minute()).map((m) => getMinuteCellPosition(m)));
+          range(0, minDate.minute()).map((m) => getMinuteCellPosition(m)));
       }
     }
     if (maxDate) {
@@ -181,7 +181,7 @@ class MinutePicker
     */
     const { value } = this.props;
     if (value && value.isSame(this.state.date, 'date')) {
-      return Math.floor(this.props.value.minutes() / MINUTES_STEP);
+      return Math.floor(this.props.value.minute() / MINUTES_STEP);
     }
   }
 
@@ -208,8 +208,8 @@ class MinutePicker
   }
 
   protected switchToNextPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const nextDate = date.clone();
       nextDate.add(1, 'day');
@@ -219,8 +219,8 @@ class MinutePicker
   }
 
   protected switchToPrevPage = (e: React.SyntheticEvent<HTMLElement>,
-                                data: any,
-                                callback: () => void): void => {
+    data: any,
+    callback: () => void): void => {
     this.setState(({ date }) => {
       const prevDate = date.clone();
       prevDate.subtract(1, 'day');
