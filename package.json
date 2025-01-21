@@ -5,6 +5,7 @@
   "description": "date/time picker built from semantic-ui elements",
   "main": "dist/commonjs/index.js",
   "scripts": {
+    "prepare": "yarn build",
     "test": "yarn env-cmd ./test/.env yarn mocha -r ts-node/register ./test/setup.js ./test/**/*.{js,jsx,ts,tsx}",
     "start": "cross-env NODE_OPTIONS=\"--openssl-legacy-provider\" yarn webpack-dev-server",
     "prebuild": "yarn lint && yarn rimraf dist/*",
