@@ -1,12 +1,12 @@
 import { JSDOM } from 'jsdom';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 
-moment.locale('en');
+dayjs.locale('en');
 
 const { window } = new JSDOM('<!doctype html><html><body></body></html>', {
   url: 'https://example.com',
